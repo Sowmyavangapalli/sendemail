@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:sockets="http://www.mulesoft.org/schema/mule/sockets"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/sockets/current/mule-sockets.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a3744af4-aa91-4864-8a06-2bc7cfd84b3b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="da586f54-b97d-48da-b590-1d6633a29f65" >
+		<email:smtp-connection host="smtp.gmail.com" port="587" user="sowmyavangapalli2@gmail.com" password="ncwnjkeljhzrooqh" >
+			<email:properties >
+				<email:property key="mail.smtp.starttls.enable" value="true"/>
+			</email:properties>
+		</email:smtp-connection>
+	</email:smtp-config>
+	<flow name="emsildend-demoFlow" doc:id="f756b8bb-8a0b-4c81-bbf6-9be1049044c0" >
+		<http:listener doc:name="Listener" doc:id="0d53dafe-5c7f-48af-bbad-d0cb5ab199ad" config-ref="HTTP_Listener_config" path="/email"/>
+		<email:send doc:name="Send" doc:id="5edd1995-48a8-42ea-8748-fa06c4fbd021" config-ref="Email_SMTP" fromAddress="sowmyavangapalli2@gmail.com" subject="hi i am sowmya">
+			<email:to-addresses >
+				<email:to-address value="sowmyavangapalli2@gmail.com" />
+			</email:to-addresses>
+			<email:body>
+				<email:content ><![CDATA[#["hi i am"]]]></email:content>
+			</email:body>
+		</email:send>
+		<set-payload value="successfuly send mail" doc:name="Set Payload" doc:id="6cbf03f4-2d36-4dc3-b597-a0de8eabcecf" />
+		<logger level="INFO" doc:name="Logger" doc:id="f19eb02a-77e2-4742-9a3f-55d3f5c1f9e5" />
+	</flow>
+</mule>
